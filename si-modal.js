@@ -10,7 +10,7 @@ $(document).ready(function() {
     var modalTriggerClass = 'modal'; // Class added to <a> or <form> to trigger modal window usage
     var $modalHtml = "<div class='modal-window'><div class='modal-scrollWrap'><iframe class='modal-iframe' frameborder='0' name='modal'></iframe></div><div class='modal-exit'>X</div></div>";
 
-    $('.'+modalClass).submit(function(event) {
+    $('.'+modalTriggerClass).submit(function(event) {
         openModal($(this), event);
     });
 
