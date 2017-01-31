@@ -37,13 +37,6 @@ $(document).ready(function() {
         }
     });
 
-    // Close modal when escape key is clicked and focus is inside modal (@todo: not working)
-    $('.modal-iframe').contents().find('body').keyup(function(e) {
-        if (e.keyCode == 27) { // escape key maps to keycode `27`
-            closeModal();
-        }
-    });
-
     function openModal($trigger, event) {
         $('body').append($modalHtml);
 
@@ -69,8 +62,9 @@ $(document).ready(function() {
     }
 
     function closeModal() {
-        $('.modal-window').fadeOut(speed);
-        $('#modal-dim').fadeOut(speed);
+        // target the parent window, in case the iframe has focus
+	$('.modal-window', window.parent.document).fadeOut(speed);
+	$('#modal-dim', window.parent.document).fadeOut(speed);
 
         setTimeout(function () {
             $('.modal-window').remove();
