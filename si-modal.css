@@ -15,7 +15,7 @@
         font-size: 1.4em;
         text-align: center;
         background: #fff;
-        transition: all .5s;
+        transition: all .3s;
     }
     /* This is required to enable scrolling in iOS */
     .modal-scrollWrap {
