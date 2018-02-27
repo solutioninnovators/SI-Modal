@@ -83,7 +83,7 @@ function SiModal(options) {
     function openModal($trigger, event) {
         $triggerEl = $trigger;
 
-        $('html').addClass('modal-noScroll');
+        $('body').addClass('modal-noScroll');
 
         if(isChild) {
             $parentModal.addClass('modal-parent');
@@ -184,7 +184,7 @@ function SiModal(options) {
         $modalWindow.fadeOut(config.speed);
         $('#modal-dim').fadeOut(config.speed);
 
-        $('html').removeClass('modal-noScroll');
+        $('body').removeClass('modal-noScroll');
 
         if(isChild) {
             $parentModal.removeClass('modal-parent');
