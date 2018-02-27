@@ -41,6 +41,7 @@ function SiModal(options) {
     var defaults = {
         triggerClass: 'modal', // Class on the <a> or <form> element that should trigger the modal window to open
         speed: 200, // Speed of animation
+        closeOnEscapeKeyPress: true,
     };
     var config = $.extend({}, defaults, options); // Merge the defaults and user specified options into config
 
@@ -69,6 +70,13 @@ function SiModal(options) {
     // Allow modal to be closed by triggering a 'modal-close' event on the body tag of the parent window
     $('body').on('modal-close', function() {
         closeModal();
+    });
+
+    // Close the modal when the escape key is clicked and the focus is outside of the window
+    $(document).keyup(function(e) {
+        if(config.closeOnEscapeKeyPress && e.keyCode == 27) { // escape key maps to keycode `27`
+            closeModal();
+        }
     });
 
 
@@ -127,7 +135,7 @@ function SiModal(options) {
                 $modalWindow.hide().css('visibility', 'visible').fadeIn(config.speed);
             }
 
-            $('.modal-iframe').focus(); // Set focus to the newly opened iframe (this doesn't work if you used the cached $iframe jquery object)
+            this.contentWindow.focus(); // Set focus to the newly opened iframe (this doesn't work if you used the cached $iframe jquery object)
 
             // Force the top page to reload if the user has been logged out (@todo: move this out of si-modal.js/handle it in a more global manner, e.g. use the get parameter to trigger autoclose on logout)
             if($iframeContents.find('body.template_Login').length) {
@@ -161,9 +169,9 @@ function SiModal(options) {
                 closeModal();
             });
 
-            // Close the modal when escape key is clicked
-            $iframeContents.find('body').keyup(function(e) {
-                if (e.keyCode == 27) { // escape key maps to keycode `27`
+            // Close the modal when escape key is clicked and the focus is inside the window
+            $iframeContents.find('body').on('keyup', function (e) {
+                if (config.closeOnEscapeKeyPress && e.keyCode == 27) { // escape key maps to keycode `27`
                     closeModal();
                 }
             });

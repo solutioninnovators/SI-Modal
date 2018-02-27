@@ -15,7 +15,8 @@
         font-size: 1.4em;
         text-align: center;
         background: #fff;
-        transition: all .3s;
+        transition: width .3s;
+        transition: height .3s;
     }
     /* This is required to enable scrolling in iOS */
     .modal-scrollWrap {
@@ -69,36 +70,36 @@
         text-align: center;
         font-size: 2rem;
     }
-		@media (max-width:1000px) {
-		    .modal-window {
-		        width: 90%;
-		    }
-		    .modal-exit {
-		        right: -26px;
-		    }
-		}
-		@media (max-width:800px) {
-		    .modal-window {
-		        width: 95%;
-		    }
-		    .modal-exit {
-		        right: -26px;
-		    }
-		}
-		@media (max-width:600px) {
-		    .modal-window {
-		        width: 100%;
-		        height: 100%;
-		    }
-		    .modal-exit {
-		        right: 0;
-		        top: 0;
-		        height: 45px;
-		        width: 35px;
-		        line-height: 45px;
-		    }
-		}
-		.modal-parent {
+    @media (max-width:1000px) {
+        .modal-window {
+            width: 90%;
+        }
+        .modal-exit {
+            right: -26px;
+        }
+    }
+    @media (max-width:800px) {
+        .modal-window {
+            width: 95%;
+        }
+        .modal-exit {
+            right: -26px;
+        }
+    }
+    @media (max-width:600px) {
+        .modal-window {
+            width: 100%;
+            height: 100%;
+        }
+        .modal-exit {
+            right: 0;
+            top: 0;
+            height: 45px;
+            width: 35px;
+            line-height: 45px;
+        }
+    }
+    .modal-parent {
         width: 100% !important;
         height: 100% !important;
         max-width: none !important;
