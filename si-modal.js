@@ -126,14 +126,16 @@ function SiModal(options) {
             var $iframeContents = $iframe.contents();
             var $iframeBody = $iframeContents.find('body');
 
-            $iframeBody.css('height', 'auto'); // Set the iframe's body height to auto so we can use it to inform the max-height of the outer modal
-            $modalWindow.css('max-height', $iframeBody.height()); // Set the max height of the modal equal to the height of the interior iframe body
+            setTimeout(function() { // Add a brief timeout to ensure we get the proper body height
+                $iframeBody.css('height', 'auto'); // Set the iframe's body height to auto so we can use it to inform the max-height of the outer modal
+                $modalWindow.css('max-height', $iframeBody.height()); // Set the max height of the modal equal to the height of the interior iframe body
 
-            // Show the modal window now that it's ready
-            $spinner.fadeOut();
-            if($modalWindow.css('visibility') == 'hidden') {
-                $modalWindow.hide().css('visibility', 'visible').fadeIn(config.speed);
-            }
+                // Show the modal window now that it's ready
+                $spinner.fadeOut();
+                if($modalWindow.css('visibility') == 'hidden') {
+                    $modalWindow.hide().css('visibility', 'visible').fadeIn(config.speed);
+                }
+            }, 1);
 
             this.contentWindow.focus(); // Set focus to the newly opened iframe (this doesn't work if you used the cached $iframe jquery object)
 
