@@ -35,7 +35,14 @@ $(document).ready(function() {
     var modalTriggerClass = 'modal'; // Class added to <a> or <form> to trigger modal window usage
     var $modalWindow = $("<div class='modal-window'><div class='modal-scrollWrap'><iframe class='modal-iframe' frameborder='0' name='modal'></iframe></div><div class='modal-exit'>X</div></div>");
 
+    var isChild = window !== top; // Is this modal the child of another modal?
     var $triggerEl; // Stores the anchor or form element that triggered the modal to open
+
+    if(isChild) {
+        var $parentDoc = $(parent.document);
+        var $parentModal = $parentDoc.find('.modal-window');
+    }
+
 
     $('body').on('submit', '.'+modalTriggerClass, function(event) {
         openModal($(this), event);
@@ -61,6 +68,13 @@ $(document).ready(function() {
 
     function openModal($trigger, event) {
         $triggerEl = $trigger;
+
+        $('html').addClass('modal-noScroll');
+
+        if(isChild) {
+            $parentModal.addClass('modal-parent');
+        }
+
         $('body').append($modalWindow);
 
         // Add custom classes to wrapper element
@@ -150,6 +164,12 @@ $(document).ready(function() {
     function closeModal() {
         $modalWindow.fadeOut(speed);
         $('#modal-dim').fadeOut(speed);
+
+        $('html').removeClass('modal-noScroll');
+
+        if(isChild) {
+            $parentModal.removeClass('modal-parent');
+        }
 
         setTimeout(function () {
             $modalWindow.remove();
