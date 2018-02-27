@@ -2,6 +2,13 @@
  * SI Modal - Simple, responsive jQuery modal windows
  * Developed by Mike Spooner (thetuningspoon) for Solution Innovators
  *
+ * BASIC USAGE
+ * $(function() {
+ *      $modal = new SiModal({
+ *          triggerClass: 'modal', // Class on the <a> or <form> element that should trigger the modal window to open
+ *          speed: 200, // Speed of animation
+ *      });
+ * }
  *
  *
  * EVENTS
@@ -11,7 +18,6 @@
  * modal-closed - Triggered any time a modal window is closed.
  * modal-saved - Triggered when the contents of a modal window is loaded or reloaded and the data-modal-saved attribute is present somewhere on the page (good for triggering an ajax refresh on the parent page after the modal is saved).
  * modal-autoclosed - Triggered when a modal window is automatically closed due to the presence of the data-modal-autoclose attribute somewhere on the page.
- *
  *
  *
  * The following events may be triggered by an external script:
@@ -29,10 +35,15 @@
  *
  */
 
-$(document).ready(function() {
-    // Config - Feel free to modify these to taste
-    var speed = 200; // Animation speed
-    var modalTriggerClass = 'modal'; // Class added to <a> or <form> to trigger modal window usage
+function SiModal(options) {
+
+    // Default configuration options if none specified
+    var defaults = {
+        triggerClass: 'modal', // Class on the <a> or <form> element that should trigger the modal window to open
+        speed: 200, // Speed of animation
+    };
+    var config = $.extend({}, defaults, options); // Merge the defaults and user specified options into config
+
     var $modalWindow = $("<div class='modal-window'><div class='modal-scrollWrap'><iframe class='modal-iframe' frameborder='0' name='modal'></iframe></div><div class='modal-exit'>X</div></div>");
 
     var isChild = window !== top; // Is this modal the child of another modal?
@@ -43,20 +54,15 @@ $(document).ready(function() {
         var $parentModal = $parentDoc.find('.modal-window');
     }
 
-
-    $('body').on('submit', '.'+modalTriggerClass, function(event) {
+    $('body').on('submit', '.' + config.triggerClass, function (event) {
         openModal($(this), event);
     });
 
-    $('body').on('click', '.'+modalTriggerClass+':not(form)', function(event) {
+    $('body').on('click', '.' + config.triggerClass + ':not(form)', function (event) {
         openModal($(this), event);
     });
 
-    $('body').on('click', '.modal-exit', function() {
-        closeModal();
-    });
-
-    $('body').on('click', '.'+modalTriggerClass+',.modal-window', function(event) {
+    $('body').on('click', '.' + config.triggerClass + ',.modal-window', function (event) {
         event.stopPropagation();
     });
 
@@ -96,7 +102,7 @@ $(document).ready(function() {
         // Show the dimmed background immediately so the user knows the modal is loading
         var $modalDim = $("<div id='modal-dim'></div>");
         $('body').append($modalDim);
-        $modalDim.fadeIn(speed);
+        $modalDim.fadeIn(config.speed);
 
         // Show the loading spinner
         var $spinner = $('<i class="modal-spinner fa fa-spin fa-circle-o-notch"></i>');
@@ -118,7 +124,7 @@ $(document).ready(function() {
             // Show the modal window now that it's ready
             $spinner.fadeOut();
             if($modalWindow.css('visibility') == 'hidden') {
-                $modalWindow.hide().css('visibility', 'visible').fadeIn(speed);
+                $modalWindow.hide().css('visibility', 'visible').fadeIn(config.speed);
             }
 
             $('.modal-iframe').focus(); // Set focus to the newly opened iframe (this doesn't work if you used the cached $iframe jquery object)
@@ -144,6 +150,11 @@ $(document).ready(function() {
                 $triggerEl.trigger('modal-saved');
             }
 
+            // Close the modal when the exit button is clicked
+            $modalWindow.on('click', '.modal-exit', function () {
+                closeModal();
+            });
+
             // Close the modal immediately when any element that matches the data-modal-close selector is clicked on (e.g. a cancel button)
             $iframeContents.find($triggerEl.attr('data-modal-close')).on('click', function(e) {
                 e.preventDefault();
@@ -162,8 +173,8 @@ $(document).ready(function() {
     }
 
     function closeModal() {
-        $modalWindow.fadeOut(speed);
-        $('#modal-dim').fadeOut(speed);
+        $modalWindow.fadeOut(config.speed);
+        $('#modal-dim').fadeOut(config.speed);
 
         $('html').removeClass('modal-noScroll');
 
@@ -174,7 +185,7 @@ $(document).ready(function() {
         setTimeout(function () {
             $modalWindow.remove();
             $('#modal-dim').remove();
-        }, speed);
+        }, config.speed);
 
         $triggerEl.trigger('modal-closed');
     }
@@ -183,4 +194,5 @@ $(document).ready(function() {
         var sep = (base.indexOf('?') > -1) ? '&' : '?';
         return base + sep + key + '=' + value;
     }
-});
+
+}
