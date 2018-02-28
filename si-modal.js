@@ -40,7 +40,7 @@ function SiModal(options) {
     // Default configuration options if none specified
     var defaults = {
         triggerClass: 'modal', // Class on the <a> or <form> element that should trigger the modal window to open
-        speed: 200, // Speed of animation
+        speed: 300, // Speed of animation
         closeOnEscapeKeyPress: true,
     };
     var config = $.extend({}, defaults, options); // Merge the defaults and user specified options into config
@@ -110,7 +110,10 @@ function SiModal(options) {
         // Show the dimmed background immediately so the user knows the modal is loading
         var $modalDim = $("<div id='modal-dim'></div>");
         $('body').append($modalDim);
-        $modalDim.fadeIn(config.speed);
+
+        var loaderDelay = 0;
+        if(isChild) loaderDelay = 250;
+        $modalDim.delay(loaderDelay).fadeIn(config.speed);
 
         // Show the loading spinner
         var $spinner = $('<i class="modal-spinner fa fa-spin fa-circle-o-notch"></i>');
