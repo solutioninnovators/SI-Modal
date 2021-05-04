@@ -15,7 +15,7 @@ $(function() {
           triggerClass: 'modal', // Class on the <a> or <form> element that should trigger the modal window to open
           speed: 200, // Speed of animation
       });
-}
+});
 ```
 
 You may initialize the module more than once using a different triggerClass if you want to use different options for different modals.

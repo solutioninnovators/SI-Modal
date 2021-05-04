@@ -8,7 +8,7 @@
  *          triggerClass: 'modal', // Class on the <a> or <form> element that should trigger the modal window to open
  *          speed: 200, // Speed of animation
  *      });
- * }
+ * });
  *
  *
  * EVENTS
